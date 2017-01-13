@@ -62,10 +62,10 @@
       self.picker.cameraViewTransform = CGAffineTransformMakeTranslation(0, (screenBounds.height - camViewHeight) / 2.0);
       self.picker.cameraViewTransform = CGAffineTransformScale(self.picker.cameraViewTransform, scale, scale);
         }
-        else{
-              self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.6f,1.6f);
+      //  else{
+          //    self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.6f,1.6f);
         
-        }
+       // }
         
        [Toolbarproperty setItems:[[NSArray alloc]initWithObjects:Flashproperty,AutoProperty,nil,nil, nil]];
    self.picker.cameraOverlayView = self.view;
@@ -115,12 +115,12 @@
         self.picker.cameraViewTransform = CGAffineTransformScale(self.picker.cameraViewTransform, scale, scale);
       
     }
-    else
+   // else
         
-    {
-        self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.6f,1.6f);
-        
-    }
+   // {
+        //self.picker.cameraViewTransform = CGAffineTransformMakeScale(1.6f,1.6f);
+     ///   
+   // }
     
     
 }
