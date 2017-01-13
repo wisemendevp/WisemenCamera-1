@@ -17,8 +17,16 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        
+   //     UIDevice *deviceInfo = [UIDevice currentDevice];
+        
+     //  NSString *devicename = deviceInfo.ud;
+        
+     //   NSLog(@“Device name:  %@”, deviceInfo.name);
+        
         // Instantiate the UIImagePickerController instance
         self.picker = [[UIImagePickerController alloc] init];
+         //self.picker.modalPresentationStyle = UIModalPresentationFormSheet;
         
         // Configure the UIImagePickerController instance
         self.picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -26,7 +34,7 @@
         self.picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         self.picker.showsCameraControls = NO;
         self.picker.wantsFullScreenLayout = YES;
-        
+   
         self.picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
      
         self.picker.delegate = self;
@@ -70,6 +78,15 @@
           _lastScale = 1.;
     }
     return self;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape; 
 }
 
 - (void)orientationChanged:(NSNotification *)notification
@@ -174,17 +191,15 @@
     return newImage;
 }
 
-// Delegate method.  UIImagePickerController will call this method as soon as the image captured above is ready to be processed.  This is also like an event callback in JavaScript.
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Get a reference to the captured image
     UIImage* image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-//  UIImage* image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
     
     //self.ImageView.image = image;
     
-     NSString* string = [self generateRandomString:5];
-      NSString* compresed_string = [self generateRandomString:5];
+    NSString* string = [self generateRandomString:5];
+    NSString* compresed_string = [self generateRandomString:5];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -193,17 +208,17 @@
     NSString* documentsDirectory = [paths objectAtIndex:0];
     NSString * s1 = @".jpg";
     string = [string stringByAppendingString:s1 ];
-     compresed_string = [compresed_string stringByAppendingString:s1 ];
+    compresed_string = [compresed_string stringByAppendingString:s1 ];
     NSString* filename = string;
-     NSString* compressed_filename = compresed_string;
+    NSString* compressed_filename = compresed_string;
     
     
     NSString* imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
-     NSString* compressed_imagePath = [documentsDirectory stringByAppendingPathComponent:compressed_filename];
+    NSString* compressed_imagePath = [documentsDirectory stringByAppendingPathComponent:compressed_filename];
     
     // Get the image data (blocking; around 1 second)
- //   NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
- //   [imageData writeToFile:imagePath atomically:YES];
+    //   NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
+    //   [imageData writeToFile:imagePath atomically:YES];
     
     
     UIImage *newImage=image;
@@ -211,12 +226,12 @@
     CGFloat width = newImage.size.width;
     CGFloat tempheight ;
     CGFloat tempwidth ;
-  //  CGSize size;
+    //  CGSize size;
     
     if(height > width)
     {
-    //portrait
-      
+        //portrait
+        
         if(height > 960 )
         {
             tempheight = 960;
@@ -225,20 +240,20 @@
         else
         {
             tempheight = height;
-       
+            
         }
         
         if(width > 720 )
         {
-          
+            
             tempwidth = 720;
         }
         else
         {
-          
+            
             tempwidth = width;
         }
-      
+        
         
     }
     
@@ -264,22 +279,23 @@
             tempwidth = width;
             
         }
-
+        
     }
     
     CGFloat ht = tempheight;
     CGFloat wt = tempwidth;
     
-  CGSize size1=CGSizeMake(150,150);
+    CGSize size1=CGSizeMake(150,150);
     CGSize size = CGSizeMake(tempwidth, tempheight);
-   
+    
     newImage=[self resizeImage:newImage newSize:size];
     UIImage * cmp_image = [self resizeImage:newImage newSize:size1];
     self.ImageView.image = cmp_image;
-
     
-     NSData* imageData1 = UIImageJPEGRepresentation(newImage, 0.5);
-      if([imageData1 length] > 350000)
+    
+    NSData* imageData1 = UIImageJPEGRepresentation(newImage, 0.7);
+   // int l1 = imageData1.length;
+    if([imageData1 length] > 350000)
     {
         imageData1 =   UIImageJPEGRepresentation(newImage, 0.65);
         
@@ -320,7 +336,7 @@
         }
     }
     NSData* compressed_imageData = UIImageJPEGRepresentation(cmp_image, 1);
-     if([compressed_imageData length] > 10000)
+    if([compressed_imageData length] > 10000)
     {
     compressed_imageData = UIImageJPEGRepresentation(cmp_image, 0.9);
         if([compressed_imageData length] > 10000)
@@ -349,6 +365,10 @@
             }
         }
     }
+    
+    
+    
+    
     [compressed_imageData writeToFile:compressed_imagePath atomically:YES];
     [imageData1 writeToFile:imagePath atomically:YES];
     
@@ -384,6 +404,10 @@
     }
 }
 
+
+
+
+// Delegate method.  UIImagePickerController will call this method as soon as the image captured above is ready to be processed.  This is also like an event callback in JavaScript.
 - (IBAction)FlashEvent:(id)sender {
     [Toolbarproperty setItems:[[NSArray alloc]initWithObjects:Flashproperty,AutoProperty,Onproperty,OffProperty, nil]];
 }
